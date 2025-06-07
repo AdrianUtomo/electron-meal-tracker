@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import {
+  Card,
+} from "./components/ui/8bit/card";
+import Ribbon2 from "./assets/images/ribbon2.png";
 
 function convertTime(diff: number) {
   const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -110,10 +114,29 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full gap-4">
-      <h1 className="text-2xl font-bold">{`Countdown to ${nextMeal} (${nextMealTime})`}</h1>
-      <div className="text-4xl font-mono">{timeRemaining}</div>
-      <p className="text-gray-600">Current time: {currentTime}</p>
+    <div className="flex flex-col items-center justify-center w-full h-full bg-[#fee3e0] border-4 border-[#c45363] text-[#d6697b] py-4">
+      <p className="text-2xl">Meal Tracker</p>
+      <div className="flex justify-center items-center gap-8">
+        <Card
+          className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
+          border="border-[#c45363]"
+        >
+            <p className="text-xs">{`${nextMeal} (${nextMealTime}) in:`}</p>
+            <p>{timeRemaining}</p>
+        </Card>
+        <Card
+          className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
+          border="border-[#c45363]"
+        >
+          <p className="text-xs">Current time:</p>
+          <p className="text-base">{currentTime}</p>
+        </Card>
+      </div>
+
+      <img className="absolute top-0 left-0 w-20" src={Ribbon2}></img>
+      <img className="absolute top-0 right-0 w-20" src={Ribbon2}></img>
+      <img className="absolute bottom-0 left-0 w-20" src={Ribbon2}></img>
+      <img className="absolute bottom-0 right-0 w-20" src={Ribbon2}></img>
     </div>
   );
 }
