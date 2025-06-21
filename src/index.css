@@ -123,7 +123,7 @@
     font-family: "Press Start 2P", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
       Arial, sans-serif;
     margin: auto;
-    padding: 1rem;
+    /* padding: 1rem; */
     background-color: #f7aab6;
     width: 100vw;
     height: 100vh;
