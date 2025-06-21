@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  Card,
-} from "./components/ui/8bit/card";
+import { Card } from "./components/ui/8bit/card";
+import { TitleBar } from "./components/ui/8bit/TitleBar";
 import Ribbon2 from "./assets/images/ribbon2.png";
+import Girl from "./assets/images/girl.png";
 
 function convertTime(diff: number) {
   const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -114,29 +114,36 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full bg-[#fee3e0] border-4 border-[#c45363] text-[#d6697b] py-4">
-      <p className="text-2xl">Meal Tracker</p>
-      <div className="flex justify-center items-center gap-8">
-        <Card
-          className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
-          border="border-[#c45363]"
-        >
+    <div className="flex flex-col items-center justify-center w-full h-full bg-[#fee3e0] border-4 border-[#c45363] text-[#d6697b]">
+      <TitleBar title="meal tracker" />
+      <div className="relative flex flex-col items-center justify-start w-full h-full py-4 px-4">
+          <p className="text-2xl">Meal Tracker</p>
+        <div className="w-full flex justify-start items-center gap-8">
+          <Card
+            className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
+            border="border-[#c45363]"
+          >
             <p className="text-xs">{`${nextMeal} (${nextMealTime}) in:`}</p>
             <p>{timeRemaining}</p>
-        </Card>
-        <Card
-          className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
-          border="border-[#c45363]"
-        >
-          <p className="text-xs">Current time:</p>
-          <p className="text-base">{currentTime}</p>
-        </Card>
+          </Card>
+          <div className="relative top-3">
+            <Card
+              border="border-[#c45363]"
+              className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
+            >
+              <p className="text-xs">Current time:</p>
+              <p className="text-base">{currentTime}</p>
+            </Card>
+          </div>
+        </div>
+        <div className="max-h-full h-65 w-120 border-4 border-[#c45363]">
+          <img className="object-cover w-full h-full" src={Girl} />
+        </div>
+        <img className="absolute top-1 left-1 w-20" src={Ribbon2}></img>
+        <img className="absolute top-1 right-1 w-20" src={Ribbon2}></img>
+        <img className="absolute bottom-1 left-1 w-20" src={Ribbon2}></img>
+        <img className="absolute bottom-1 right-1 w-20" src={Ribbon2}></img>
       </div>
-
-      <img className="absolute top-0 left-0 w-20" src={Ribbon2}></img>
-      <img className="absolute top-0 right-0 w-20" src={Ribbon2}></img>
-      <img className="absolute bottom-0 left-0 w-20" src={Ribbon2}></img>
-      <img className="absolute bottom-0 right-0 w-20" src={Ribbon2}></img>
     </div>
   );
 }
