@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card } from "./components/ui/8bit/card";
 import { TitleBar } from "./components/ui/8bit/TitleBar";
 import Ribbon2 from "./assets/images/ribbon2.png";
 import Girl from "./assets/images/girl.png";
+import GirlEating from "./assets/images/girl-eating.png";
 
 function convertTime(diff: number) {
   const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -19,9 +20,31 @@ export default function App() {
   const [timeRemaining, setTimeRemaining] = useState("");
   const [nextMeal, setNextMeal] = useState<string>("");
   const [nextMealTime, setNextMealTime] = useState<string>("");
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const [animationImage, setAnimationImage] = useState('');
+  const timerRef = useRef(null)
+  const prevMealRef = useRef<string>("");
+  const isFirstRun = useRef<boolean>(true);
+
+  function startAnimation() {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      let count = 0;
+      setAnimationImage(GirlEating);
+      const interval = setInterval(() => {
+        setAnimationImage((img: string) => (img === Girl ? GirlEating : Girl));
+        count++;
+        if (count >= 10) {
+          clearInterval(interval);
+          setIsAnimating(false);
+          setAnimationImage(Girl);
+        }
+      }, 500);
+    }
+  }
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    timerRef.current = setInterval(() => {
       const now = new Date();
       setCurrentTime(now.toLocaleTimeString());
 
@@ -95,10 +118,17 @@ export default function App() {
         hour12: true,
       });
 
-      setNextMeal((prev) => (prev !== nextMealName ? nextMealName : prev));
-      setNextMealTime((prev) =>
-        prev !== formattedNextMealTime ? formattedNextMealTime : prev
-      );
+      if (prevMealRef.current !== nextMealName) {
+        if (!isFirstRun.current) {
+          startAnimation();
+        }
+        setNextMeal(nextMealName);
+        setNextMealTime(formattedNextMealTime);
+        prevMealRef.current = nextMealName;
+        if (isFirstRun.current) {
+          isFirstRun.current = false;
+        }
+      }
 
       // Convert to hours, minutes, seconds
       const { hours, minutes, seconds } = convertTime(diff);
@@ -110,14 +140,14 @@ export default function App() {
       );
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => clearInterval(timerRef.current);
   }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-[#fee3e0] border-4 border-[#c45363] text-[#d6697b]">
       <TitleBar title="meal tracker" />
       <div className="relative flex flex-col items-center justify-start w-full h-full py-4 px-4">
-          <p className="text-2xl">Meal Tracker</p>
+        <p className="text-2xl">Meal Tracker</p>
         <div className="w-full flex justify-start items-center gap-8">
           <Card
             className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
@@ -137,7 +167,10 @@ export default function App() {
           </div>
         </div>
         <div className="max-h-full h-65 w-120 border-4 border-[#c45363]">
-          <img className="object-cover w-full h-full" src={Girl} />
+          <img
+            className="object-cover w-full h-full"
+            src={isAnimating ? animationImage : Girl}
+          />
         </div>
         <img className="absolute top-1 left-1 w-20" src={Ribbon2}></img>
         <img className="absolute top-1 right-1 w-20" src={Ribbon2}></img>
