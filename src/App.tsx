@@ -4,6 +4,7 @@ import { TitleBar } from "./components/ui/8bit/TitleBar";
 import Ribbon2 from "./assets/images/ribbon2.png";
 import Girl from "./assets/images/girl.png";
 import GirlEating from "./assets/images/girl-eating.png";
+import winsquareSound from "./assets/sounds/winsquare.mp3";
 
 function convertTime(diff: number) {
   const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -21,16 +22,29 @@ export default function App() {
   const [nextMeal, setNextMeal] = useState<string>("");
   const [nextMealTime, setNextMealTime] = useState<string>("");
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
-  const [animationImage, setAnimationImage] = useState('');
-  const timerRef = useRef(null)
+  const [animationImage, setAnimationImage] = useState("");
+  const [volume, setVolume] = useState<number>(100);
+  const timerRef = useRef(null);
   const prevMealRef = useRef<string>("");
   const isFirstRun = useRef<boolean>(true);
+  const animationAudio = useRef<HTMLAudioElement | null>(
+    new Audio(winsquareSound)
+  );
 
   function startAnimation() {
     if (!isAnimating) {
       setIsAnimating(true);
       let count = 0;
       setAnimationImage(GirlEating);
+
+      // Play the audio
+      if (animationAudio.current) {
+        animationAudio.current.currentTime = 0; // Reset to beginning
+        animationAudio.current.play().catch((error) => {
+          console.log("Audio play failed:", error);
+        });
+      }
+
       const interval = setInterval(() => {
         setAnimationImage((img: string) => (img === Girl ? GirlEating : Girl));
         count++;
@@ -42,6 +56,13 @@ export default function App() {
       }, 500);
     }
   }
+
+  // Update audio volume when volume state changes
+  useEffect(() => {
+    if (animationAudio.current) {
+      animationAudio.current.volume = volume / 100;
+    }
+  }, [volume]);
 
   useEffect(() => {
     timerRef.current = setInterval(() => {
@@ -145,20 +166,20 @@ export default function App() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-[#fee3e0] border-4 border-[#c45363] text-[#d6697b]">
-      <TitleBar title="meal tracker" />
+      <TitleBar volume={volume} setVolume={setVolume} />
       <div className="relative flex flex-col items-center justify-start w-full h-full py-4 px-4">
         <p className="text-2xl">Meal Tracker</p>
         <div className="w-full flex justify-start items-center gap-8">
           <Card
             className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
-            border="border-[#c45363]"
+            borderClassNames="border-[#c45363]"
           >
             <p className="text-xs">{`${nextMeal} (${nextMealTime}) in:`}</p>
             <p>{timeRemaining}</p>
           </Card>
           <div className="relative top-3">
             <Card
-              border="border-[#c45363]"
+              borderClassNames="border-[#c45363]"
               className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
             >
               <p className="text-xs">Current time:</p>
