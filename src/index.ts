@@ -73,5 +73,25 @@ ipcMain.on("window-close", () => {
   if (window) window.close();
 });
 
+// Add IPC handlers for window pinning
+ipcMain.on("window-pin", () => {
+  const window = BrowserWindow.getFocusedWindow();
+  if (window) {
+    window.setAlwaysOnTop(true);
+  }
+});
+
+ipcMain.on("window-unpin", () => {
+  const window = BrowserWindow.getFocusedWindow();
+  if (window) {
+    window.setAlwaysOnTop(false);
+  }
+});
+
+ipcMain.handle("window-get-pin-status", () => {
+  const window = BrowserWindow.getFocusedWindow();
+  return window ? window.isAlwaysOnTop() : false;
+});
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
