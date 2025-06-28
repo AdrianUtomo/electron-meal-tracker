@@ -33,4 +33,9 @@ export const rules: Required<ModuleOptions>['rules'] = [
     test: /\.(png|jpg|jpeg|gif|ico)$/i,
     type: 'asset/resource',
   },
+  {
+    // This is the rule for audio files
+    test: /\.(mp3|wav|ogg|m4a)$/i,
+    type: 'asset/resource',
+  },
 ];
