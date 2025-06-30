@@ -167,23 +167,32 @@ export default function App() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-[#fee3e0] border-4 border-[#c45363] text-[#d6697b]">
       <TitleBar volume={volume} setVolume={setVolume} />
-      <div className="relative flex flex-col items-center justify-start w-full h-full py-4 px-4">
+      <div className="relative flex flex-col items-center justify-start w-full h-full py-4 px-4 gap-4">
         <p className="text-2xl">Meal Tracker</p>
-        <div className="w-full flex justify-start items-center gap-8">
-          <Card
-            className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
-            borderClassNames="border-[#c45363]"
-          >
-            <p className="text-xs">{`${nextMeal} (${nextMealTime}) in:`}</p>
-            <p>{timeRemaining}</p>
-          </Card>
-          <div className="relative top-3">
+        <div className="w-full grid grid-cols-5 gap-8">
+          <div className="relative col-span-3">
+            <div className="absolute w-full top-0 left-0 h-[100px]">
+              <Card
+                className="h-full w-full bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-between items-start gap-0"
+                borderClassNames="border-[#c45363]"
+              >
+                {/* <p className="text-xs">{`${nextMeal} (${nextMealTime}) in:`}</p> */}
+                {/* <p className="text-sm">{`Afternoon Snack (9 PM) in:`}</p> */}
+                <div className="flex flex-col justify-start items-start">
+                  <p className="text-sm">{`${nextMeal}`}</p>
+                  <p className="text-sm">{`(${nextMealTime}) in:`}</p>
+                </div>
+                <p>{timeRemaining}</p>
+              </Card>
+            </div>
+          </div>
+          <div className="col-span-2">
             <Card
               borderClassNames="border-[#c45363]"
-              className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-center items-center gap-0"
+              className="bg-[#fec7cd] text-[#8c303f] p-2 flex flex-col justify-between items-start gap-0"
             >
-              <p className="text-xs">Current time:</p>
-              <p className="text-base">{currentTime}</p>
+              <p className="text-[10px]">Current time:</p>
+              <p className="text-[13px]">{currentTime}</p>
             </Card>
           </div>
         </div>
