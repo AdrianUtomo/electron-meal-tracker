@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Card } from "./components/ui/8bit/card";
 import { TitleBar } from "./components/ui/8bit/TitleBar";
-import Ribbon2 from "./assets/images/ribbon2.png";
+import Ribbon from "./assets/images/ribbon.png";
 import Girl from "./assets/images/girl.png";
 import GirlEating from "./assets/images/girl-eating.png";
 import winsquareSound from "./assets/sounds/winsquare.mp3";
@@ -125,9 +125,16 @@ export default function App() {
           break;
         // After evening snack, set next meal to breakfast of the next day
         default:
-          nextMealDate = new Date(now);
-          nextMealDate.setDate(now.getDate() + 1);
-          nextMealDate.setHours(8, 0, 0, 0);
+          if (now < breakfast) {
+            // Before today's breakfast: next meal is today at 8:00 AM
+            nextMealDate = new Date(now);
+            nextMealDate.setHours(8, 0, 0, 0);
+          } else {
+            // After evening snack: next meal is tomorrow at 8:00 AM
+            nextMealDate = new Date(now);
+            nextMealDate.setDate(now.getDate() + 1);
+            nextMealDate.setHours(8, 0, 0, 0);
+          }
           diff = nextMealDate.getTime() - now.getTime();
           nextMealName = "Breakfast";
           break;
@@ -196,16 +203,10 @@ export default function App() {
             </Card>
           </div>
         </div>
-        <div className="max-h-full h-65 w-120 border-4 border-[#c45363]">
-          <img
-            className="object-cover w-full h-full"
-            src={isAnimating ? animationImage : Girl}
-          />
-        </div>
-        <img className="absolute top-1 left-1 w-20" src={Ribbon2}></img>
-        <img className="absolute top-1 right-1 w-20" src={Ribbon2}></img>
-        <img className="absolute bottom-1 left-1 w-20" src={Ribbon2}></img>
-        <img className="absolute bottom-1 right-1 w-20" src={Ribbon2}></img>
+        <img className="absolute top-1 left-1 w-20" src={Ribbon}></img>
+        <img className="absolute top-1 right-1 w-20" src={Ribbon}></img>
+        <img className="absolute bottom-1 left-1 w-20" src={Ribbon}></img>
+        <img className="absolute bottom-1 right-1 w-20" src={Ribbon}></img>
       </div>
     </div>
   );
