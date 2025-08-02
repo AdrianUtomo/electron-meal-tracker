@@ -203,6 +203,12 @@ export default function App() {
             </Card>
           </div>
         </div>
+        <div className="max-h-full h-65 w-120 border-4 border-[#c45363]">
+          <img
+            className="object-cover w-full h-full"
+            src={isAnimating ? animationImage : Girl}
+          />
+        </div>
         <img className="absolute top-1 left-1 w-20" src={Ribbon}></img>
         <img className="absolute top-1 right-1 w-20" src={Ribbon}></img>
         <img className="absolute bottom-1 left-1 w-20" src={Ribbon}></img>
